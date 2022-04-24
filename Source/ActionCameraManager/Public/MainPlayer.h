@@ -1,6 +1,6 @@
 #pragma once
 
-#include "EngineMinimal.h"
+#include "CoreMinimal.h"
 #include "GameFramework/Character.h"
 #include "MainPlayer.generated.h"
 
@@ -11,20 +11,20 @@ class ACTIONCAMERAMANAGER_API AMainPlayer : public ACharacter
 
 public:
 	AMainPlayer();
+	virtual void Tick(float DeltaTime) override;
+	virtual void PossessedBy(AController* NewController) override;
+	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
 protected:
 	virtual void BeginPlay() override;
 
+	/** The player moves based on the rotation of the CameraManager */
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
-	TSubclassOf<AActor> SpectatingViewpointClass;		//Find MainCameraManager Class...
+	/** MainCameraManager class to find */
+	UPROPERTY(EditDefaultsOnly, Category = "InitSetting")
+	TSubclassOf<AActor> CameraManagerClass;
 
-	UPROPERTY(EditDefaultsOnly, Category = "Components")
 	class AMainCameraManager* CameraManager;
-public:
-	virtual void Tick(float DeltaTime) override;
-	virtual void PossessedBy(AController* NewController) override;
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 };

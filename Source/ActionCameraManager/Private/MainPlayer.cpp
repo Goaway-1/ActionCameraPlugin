@@ -1,30 +1,37 @@
 #include "MainPlayer.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Kismet/GameplayStatics.h"
+#include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "MainCameraManager.h"
 
 AMainPlayer::AMainPlayer() {
 	PrimaryActorTick.bCanEverTick = true;
 
+	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
+
+	/** Configure character Rotation */
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationPitch = false;
 
-	GetCapsuleComponent()->InitCapsuleSize(42.f, 96.0f);
-
-	// Configure character movement
-	GetCharacterMovement()->bOrientRotationToMovement = true; // Character moves in the direction of input...	
-	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); // ...at this rotation rate
+	/** Configure character movement */
+	GetCharacterMovement()->bOrientRotationToMovement = true; 
+	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f); 
 	GetCharacterMovement()->JumpZVelocity = 600.f;
 	GetCharacterMovement()->AirControl = 0.2f;
 }
 void AMainPlayer::BeginPlay() {
 	Super::BeginPlay();
 
-	if (SpectatingViewpointClass) {
-		AMainCameraManager* TargetCamera = Cast<AMainCameraManager>(UGameplayStatics::GetActorOfClass(this, SpectatingViewpointClass));
-
+	/** Find MainCameraManager & Set */
+	if (CameraManagerClass) {
+		AMainCameraManager* TargetCamera = Cast<AMainCameraManager>(UGameplayStatics::GetActorOfClass(this, CameraManagerClass));
+		
 		if (TargetCamera) CameraManager = TargetCamera;
+		else GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Error! MainCameraManager does not exist in the world!"));
 	}
+	else GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Error! CameraManagerClass does not exist"));
 }
 void AMainPlayer::PossessedBy(AController* NewController) {
 	Super::PossessedBy(NewController);
@@ -32,6 +39,7 @@ void AMainPlayer::PossessedBy(AController* NewController) {
 void AMainPlayer::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
+	/** Setting the rotation of the controller according to the rotation of the CameraManager */
 	if (CameraManager) {
 		FRotator NRot = FRotator(CameraManager->GetActorRotation().Pitch, CameraManager->GetActorRotation().Yaw, GetController()->GetControlRotation().Roll);
 		GetController()->SetControlRotation(NRot);
