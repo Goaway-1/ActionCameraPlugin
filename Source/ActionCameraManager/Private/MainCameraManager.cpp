@@ -123,7 +123,7 @@ void AMainCameraManager::SetViewAllPlayers() {
 }
 void AMainCameraManager::SetNonOverlap() {
 	float P1ToRootFactor = UKismetMathLibrary::FClamp((Players[0]->GetActorLocation() - DefaultSceneRoot->GetComponentLocation()).Size() / 800.f, 0.f, 1.f);
-	float DeActiveRange = UKismetMathLibrary::Lerp(MaxOverlapInnerVal, MinOverlapInnerVal, P1ToRootFactor);	//³»Àû°ªÀÇ ÃÖ¼Ò, ÃÖ´ë
+	float DeActiveRange = UKismetMathLibrary::Lerp(MaxOverlapInnerVal, MinOverlapInnerVal, P1ToRootFactor);	//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö¼ï¿½, ï¿½Ö´ï¿½
 
 	float YawForce = ((IsForward * IsLeft) * (OverlapRotateForce * DeActiveRange)) * UGameplayStatics::GetWorldDeltaSeconds(this);
 	DefaultSceneRoot->AddWorldRotation(FRotator(0.f, YawForce, 0.f), false, false);
