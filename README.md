@@ -1,10 +1,17 @@
 > # ActionCameraManager Plugin
-  - 이 플러그인은 2D, 3D와 같은 액션 격투 게임에 사용되는 카메라 관리자입니다. 이를 사용하면 카메라의 이동(뷰포트)을 자동으로 조작하여 플레이어들이 뷰포트에 항상 위치하도록 유지합니다.  
+  |<h3>__ActionCameraManger__</h3>|<h3>__Naurto__</h3>|
+  |:--:|:--:|
+  |<img src="Image/Cameramanager.gif" height="250" title="Cameramanager">|<img src="Image/Naruto.gif" height="250" title="Naruto">|
+  |개발한 액션 카메라의 움직임|참조한 나루토 얼티밋 스톰4 의 카메라의 움직임|
 
-  [UnrealEngine MarketPlace](wwwww)
-  [Preview Video](wwwww)
-  [Setup Video](wwwww)
-  [Test Project](www)
+  |||
+  |:--:|--|
+  |작업 기간|2022.03.09 ~ 2022.04.03 (약 한달)|
+  |인력 구성|1인 개발|
+  |프로젝트 목적|대전 격투 게임을 제작하기 위해서 카메라 플러인을 찾는 도중 본인이 원하는 플러그인이 없다는 것을 확인하고, 직접 플러그인을 제작 & 배포하여 다른 개발자들에게 유용함을 주기 위하여 진행|
+  |프로젝트 내용|이 플러그인은 2D, 3D와 같은 액션 격투 게임에 사용되는 카메라 관리자입니다. 이를 사용하면 카메라의 이동(뷰포트)을 자동으로 조작하여 플레이어들이 뷰포트에 항상 위치하도록 유지합니다. |
+  |사용언어 및 개발 환경|C++, Unreal Engine(5.0.1), Visual Studio Community 2022, Window10|
+  |참고 자료|[UnrealEngine MarketPlace](https://www.unrealengine.com/marketplace/en-US/product/6b542e9ad0b64686b1bf31dca9276316), [Preview Video](https://youtu.be/iWDMIVvR27I), [Setup Video](https://youtu.be/7N1cTe_sLFk), [Test Project](https://drive.google.com/file/d/1rqQjbcDdOxXinYIBNvA0E9hg38SsS1CW/view?usp=sharing)|
 
 > ## 목차
 1. [설명 (Description)](#설명-(Description))
@@ -13,6 +20,7 @@
    1. [2D_Fix Mode](#2D_Fix-Mode)
    2. [2D Mode](#2D-Mode)
    3. [3D Mode](#2D-Mode)
+4. [개선점 (Improvement points)](#개선점-(Improvement-points))
 
 > ### **<h3>설명 (Description)</h3>**
   - ActionCameraManger 플러그인은 Takken7, Naruto Ulitimate Ninja Storm 4와 같은 __액션 배틀 게임에서 사용하는 로컬 카메라 플러그인입니다.__ 이 플러그인을 사용한다면 카메라의 조작을 MainCameraManager에서 자동으로 조작하기 때문에 개발자는 카메라에 대해서 개발을 진행할 필요가 없습니다. 이 카메라의 모드는 2D, 2D_fix, 3D로 총 3가지를 가지고 있습니다. 
@@ -211,7 +219,9 @@
 
   - ### **3D Mode**
   - <img src="Image/3D_Logic.png" height="400" title="3D_Logic"> <img src="Image/Operating_3D.gif" height="300" title="Operating_3D">
-    - ~~
+    - 2D Mode에서의 회전을 보면 자연스럽지 않다는 것을 확인할 수 있는데 이를 보완하기 위한 모드.
+    - ReferenceScene라는 참조 컴포넌트를 추가하여 Root의 회전 시 참조하며, 이는 항상 P1과 동일한 X축에 위치한다.
+      - ReferenceScene과 P1 사이의 거리가 일정거리만큼 멀어진다면 Reference가 P1의 방향으로 갈 수 있도록 Root에 회전을 더한다.
 
       <details><summary>Cpp File</summary> 
 
@@ -346,3 +356,6 @@
         class AMainCameraManager* CameraManager;
       ```
       </details>
+
+> ### **<h3>개선점 (Improvement points)</h3>**
+  - 조만간 OpenSource를 공부하여 올릴 예정이다. 그렇게 된다면 더욱 더 나은 플러그인이 되지 않을까?
